@@ -22,12 +22,23 @@ app.get('/', (req, res) => {
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
 client.connect(err => {
   const ClassesCollection = client.db("power-xym").collection("classesIteam");
+  const ShipmentCollection = client.db("power-xym").collection("shipmentInfo");
 
 // all classes data adding 
 
 app.post('/allClasesDataAdd', (req, res) => {
     const classes = req.body;
     ClassesCollection.insertMany(classes)
+    .then(result =>{
+        res.send(result.insertedCount > 0)
+        
+    })
+})
+
+// shipment 
+app.post('/shipmentInfoAdd', (req, res) => {
+    const shipment = req.body;
+    ShipmentCollection.insertOne(shipment)
     .then(result =>{
         res.send(result.insertedCount > 0)
         
